@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Player</title>
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+    <div class="main-box">
+        <div class="music-list">
+            <h1 class="font">
+                <i class="fa fa-list playIcon"></i>
+                Playlist
+            </h1>
+            <br>
+            <ul></ul>            
+            <div class="loading"></div>
+        </div>
+        <style>
+        </style>
+        <div class="music-play-box">
+            <div class="play-box-main">
+                <div class="music-cover">
+                    <img src="covers/cover.jpg" alt="music cover">
+                </div>
+                <div class="music-info">
+                    <h3>Unkonw</h3>
+                    <span>Unkonw</span>
+                </div>
+                <div class="music-progress-bar">
+                    <input type="range" value="0" id="rangeInput">
+                    <span class="currentTime">00:00</span>
+                    <span class="totalTime">00:00</span>
+                </div>
+                <div class="player-control">
+                    <div class="rewind">
+                        <i class="fa fa-backward"></i>
+                    </div>
+                    <div class="play">
+                        <i class="fa fa-play"></i>
+                    </div>
+                    <div class="forward">
+                        <i class="fa fa-forward"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/player.js"></script>
+<script>
+    audio({
+        id: 'main-box',
+        theme: "dark",
+        src: ["http://localhost/test/1.mp3", "http://localhost/test/2.mp3", "http://localhost/test/3.mp3"]
+    });
+</script>
+<script src="js/all.min.js"></script>
+
+</html>
