@@ -1,5 +1,3 @@
-let domId = null;
-let theme = null;
 let musicSource = [];
 let musicData = [];
 let musicItems = document.querySelector(".music-list ul");
