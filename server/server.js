@@ -1,8 +1,8 @@
-const jsmediatags = require("jsmediatags");
+const mm = require("music-metadata");
 const express = require("express");
 const app = express();
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -11,30 +11,28 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.json());
-app.post("/", function(req, res) {
+app.post("/", (req, res) => {
   let source = req.body.info;
   let finishSources = [];
-  for (let i = 0; i < source.length; i++) {
-    jsmediatags.read(source[i], {
-      onSuccess: function(tag) {
-        tag = tag.tags;
-        finishSources.push({
-          id: i + 1,
-          path: source[i],
-          title: tag.title,
-          artist: tag.artist,
-          year: tag.year,
-          picture: tag.picture
-        });
-        if (source.length == i + 1) {
-          res.send(finishSources);
-        }
-      },
-      onError: function(error) {
-        console.log(":(", error.type, error.info);
-      }
+  Promise.all(source.map((path, i) => {
+    return mm.parseFile(path).then(metadata => {
+      tag = metadata.common;
+      finishSources.push({
+        id: i + 1,
+        path: path,
+        title: tag.title,
+        artist: tag.artist,
+        year: tag.year,
+        picture: tag.picture ? tag.picture[0] : undefined
+      });
+    }, error => {
+      throw new Error(`Failed to parse ${path}: ${error.message}`);
     });
-  }
+  })).then(() => {
+    res.send(finishSources);
+  }, error => {
+    res.status(500).send(error.message);
+  });
 });
 
 app.listen(3200, () => {
